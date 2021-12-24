@@ -1,0 +1,40 @@
+﻿@using Data.Modelos
+@using Data
+
+<h3>Delete</h3>
+
+<MatDialog @bind-IsOpen="@dialogIsOpen">
+    <MatDialogTitle>Hola</MatDialogTitle>
+    <MatDialogContent>
+        <p>Esta seguro que quiere eliminar este registro</p>
+    </MatDialogContent>
+    <MatDialogActions>
+        <MatButton OnClick="Cancelar">Cancelar</MatButton>
+        <MatButton OnClick="Eliminar">OK</MatButton>
+    </MatDialogActions>
+</MatDialog>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public bool dialogIsOpen { get; set; }
+    [Parameter] public EventCallback<int> onSubmit { get; set; }
+    [Inject] ISociosService SociosService { get; set; }
+    [Inject] IJSRuntime JS { get; set; }
+    public async Task Eliminar()
+    {
+        var response = await SociosService.DeleteSocio(Id);
+        if (response)
+        {
+
+            await JS.InvokeAsync<object>("alert", "Registro eliminado con éxito");
+            await onSubmit.InvokeAsync(1);
+            dialogIsOpen = false;
+        }
+    }
+    public async void Cancelar()
+    {
+        await onSubmit.InvokeAsync(1);
+        dialogIsOpen = false;
+    }
+
+}

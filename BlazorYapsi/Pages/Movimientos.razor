@@ -1,0 +1,67 @@
+﻿@inherits ComponentBase
+@using Data
+@using Data.Modelos
+@using System.Linq
+
+<h3>Movimientos</h3>
+<br />
+
+@if (muestraMovimientos)
+{
+    <MatButton Raised="true" Icon="playlist_add" @onclick="NuevoMovimiento">Nuevo Movimiento</MatButton>
+    <MatButton Raised="true" Icon="undo" @onclick="Regresar">Regresar</MatButton>
+    <MatTable Items="@movimientos" class="mat-elevation-z5" ShowPaging="true" PageSize="10">
+        <MatTableHeader>
+            <th>Cantidad</th>
+            <th>Tipo de Movimiento</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Cantidad</td>
+            @if (context.IdTipoMovimiento == 1)
+                {
+                <td>aportación social</td>
+                }
+                else if (context.IdTipoMovimiento == 2)
+                {
+                <td>ahorro</td>
+                }
+                else
+                {
+                <td>retiro</td>
+                }
+        </MatTableRow>
+    </MatTable>
+}
+@if (MostrarFormularioMovimientos)
+{
+    <FormMovimientos Movimiento="movimiento"  onSubmit="Regresar" Id="Id" />
+}
+
+@code {
+
+    [Inject] IMovimientosService movimientosService { get; set; }
+
+    [Parameter] public int Id { get; set; }
+    [Parameter] public EventCallback<int> onSubmit { get; set; }
+
+    private IEnumerable<Data.Modelos.Movimiento> movimientos { get; set; }
+    private bool muestraMovimientos;
+    private bool MostrarFormularioMovimientos;
+    public Movimiento movimiento;
+
+    protected override async Task OnInitializedAsync()
+    {
+        movimientos = await movimientosService.GetMovimientos(Id);
+        muestraMovimientos = true;
+    }
+    public void NuevoMovimiento()
+    {
+        movimiento = new Movimiento();
+        muestraMovimientos = false;
+        MostrarFormularioMovimientos = true;
+    }
+    private async Task Regresar()
+    {
+        await onSubmit.InvokeAsync(1);
+    }
+}

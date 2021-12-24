@@ -1,0 +1,111 @@
+﻿@page "/socios"
+@inherits ComponentBase
+@using Data
+@using Data.Modelos
+
+<h3>Socios</h3>
+<br />
+@if (success)
+{
+    <MatButton Raised="true" Icon="add" @onclick="NuevoSocio">Nuevo Socio</MatButton>
+    <MatTable Items="@socios" class="mat-elevation-z5" ShowPaging="true" PageSize="10" FilterByColumnName="Nombres">
+        <MatTableHeader>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Correo Electronico</th>
+            <th>Teléfono de contacto</th>
+            <th>Saldo Total</th>
+            <th>Acciones</th>
+        </MatTableHeader>
+        <MatTableRow>
+            <td>@context.Nombres</td>
+            <td>@context.Apellidos</td>
+            <td>@context.FechaNacimiento</td>
+            <td>@context.Correo</td>
+            <td>@context.Telefono</td>
+            <td>@string.Format("${0:f2}", @context.SaldoTotal)</td>
+            <td><Acciones Id="@context.Id" onEdit="Decision" /></td>
+        </MatTableRow>
+    </MatTable>
+}
+
+@if (MostrarFormularioSocio)
+{
+    <br />
+    <FormSocio Socio="socio" TipoAccion="tipoAccion" onSubmit="FormCompleted" IsShow="isShow"/>
+}
+@if (MostrarMovimientos)
+{
+    <Movimientos Id="socio.Id" onSubmit="FormCompleted" />
+}
+@if (dialogIsOpen)
+{
+    <Delete Id="socio.Id" onSubmit="FormCompleted" dialogIsOpen="dialogIsOpen" />    
+}
+
+
+
+
+@code{
+
+    [Inject] ISociosService SociosService { get; set; }
+
+    private IEnumerable<Socio> socios { get; set; } = new List<Socio>();
+    public Socio socio { get; set; }
+    private bool success;
+    private bool MostrarFormularioSocio;
+    private bool MostrarMovimientos;
+    private bool dialogIsOpen;
+    private bool isShow;
+    private int tipoAccion;
+
+    protected override async Task OnInitializedAsync()
+    {
+        MostrarMovimientos = false;
+        MostrarFormularioSocio = false;
+        dialogIsOpen = false;
+        socios = await SociosService.GetSociosAsync();
+        success = true;
+    }
+
+    private void Decision(Tuple<int, int> element)
+    {
+        success = false;
+        switch (element.Item2)
+        {
+            case 1:
+                socio = socios.ToList().First(x => x.Id == element.Item1);
+                tipoAccion = 1;
+                isShow = true;
+                MostrarFormularioSocio = true;
+                break;
+            case 2:
+                socio = socios.ToList().First(x => x.Id == element.Item1);
+                MostrarMovimientos = true;
+                break;
+            case 3:
+                success = true;
+                socio = socios.ToList().First(x => x.Id == element.Item1);
+                dialogIsOpen = true;
+                break;
+
+        }
+    }
+
+    private async Task FormCompleted(int id)
+    {
+
+        await OnInitializedAsync();
+    }
+
+    private void NuevoSocio()
+    {
+        socio = new Socio();
+        tipoAccion = 2;
+        isShow = false;
+        success = false;
+        MostrarFormularioSocio = true;
+    }
+
+}

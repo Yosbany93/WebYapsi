@@ -1,0 +1,48 @@
+﻿@using Data.Modelos
+@using Data
+
+
+
+<EditForm Model="Movimiento" OnValidSubmit="Success">
+    <DataAnnotationsValidator />
+    <MatTextField @bind-Value="@Movimiento.Cantidad" Label="Monto"></MatTextField>
+    <ValidationMessage For="@(() => Movimiento.Cantidad)" />
+    <MatSelect Label="Eliga tipo de movimiento" Outlined="true" @bind-Value="@Movimiento.IdTipoMovimiento">
+        <MatOption TValue="int" Value="2">Ahorro</MatOption>
+        <MatOption TValue="int" Value="3">Retiro</MatOption>
+    </MatSelect>
+    <ValidationMessage For="@(() => Movimiento.IdTipoMovimiento)" />
+
+    <MatButton Raised="true" Icon="save" @onclick="Submit">Guardar</MatButton>
+    <MatButton Raised="true" Icon="undo" @onclick="Regresar">Regresar</MatButton>
+</EditForm>
+
+@code {
+    [Inject] IMovimientosService movimientosService { get; set; }
+    [Inject] IJSRuntime JS { get; set; }
+    [Parameter] public Movimiento Movimiento { get; set; }
+    [Parameter] public EventCallback<int> onSubmit { get; set; }
+    [Parameter] public int Id { get; set; }
+    public int index;
+    private async Task Submit()
+    {
+        var response = await movimientosService.PostSocio(Id, Movimiento);
+        if (response)
+        {
+            await onSubmit.InvokeAsync(1);
+            await JS.InvokeAsync<object>("alert", "Movimiento realizado con exito");
+        }
+        else if (index == 1)
+        {
+            await JS.InvokeAsync<object>("alert", "El saldo disponible es menor que el retiro que desea realizar");
+        }
+    }
+    private async Task Regresar()
+    {
+        await onSubmit.InvokeAsync(1);
+    }
+    async Task Success()
+    {
+        index = 1;
+    }
+}

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPIYapsi", "WebAPIYapsi.csproj", "{725A7ABF-D522-4DC5-A7EB-BCD0D6EDA8CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorYapsi", "..\BlazorYapsi\BlazorYapsi.csproj", "{B7C5B295-1F72-40B6-8111-ECB2537A7C18}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{725A7ABF-D522-4DC5-A7EB-BCD0D6EDA8CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{725A7ABF-D522-4DC5-A7EB-BCD0D6EDA8CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{725A7ABF-D522-4DC5-A7EB-BCD0D6EDA8CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{725A7ABF-D522-4DC5-A7EB-BCD0D6EDA8CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7C5B295-1F72-40B6-8111-ECB2537A7C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7C5B295-1F72-40B6-8111-ECB2537A7C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7C5B295-1F72-40B6-8111-ECB2537A7C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7C5B295-1F72-40B6-8111-ECB2537A7C18}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C84C683-5120-40C4-822D-EABB0ADC4F54}
+	EndGlobalSection
+EndGlobal

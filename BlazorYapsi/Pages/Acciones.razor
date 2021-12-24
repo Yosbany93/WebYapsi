@@ -1,0 +1,25 @@
+﻿<MatButton Raised="true" Icon="create" @onclick="Editar">Editar</MatButton>
+<MatButton Raised="true" Icon="view_list" @onclick="Movimientos">Consultar Movimientos</MatButton>
+<MatButton Raised="true" Icon="clear" @onclick="ELiminar">ELiminar</MatButton>
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public EventCallback<Tuple<int, int>> onEdit { get; set; }
+
+
+    private async Task Editar()
+    {
+        await onEdit.InvokeAsync(new Tuple<int, int>(item1: Id, item2: 1));
+    }
+
+    private async Task Movimientos()
+    {
+        await onEdit.InvokeAsync(new Tuple<int, int>(item1: Id, item2: 2));
+    }
+
+    private async Task ELiminar()
+    {
+        await onEdit.InvokeAsync(new Tuple<int, int>(item1: Id, item2: 3));
+    }
+}
